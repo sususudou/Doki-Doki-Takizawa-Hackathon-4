@@ -1,0 +1,22 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width:100%;
+    height:100vh;
+    overflow: hidden;
+}
+
+
+#wrapper{
+	display:flex;
+}
+
+#pearing-description{
+	align-items: center;
+}
+
+.pearing-note{
+	font-size: 12px;
+}
