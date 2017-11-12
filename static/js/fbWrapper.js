@@ -10,6 +10,28 @@ var config = {
 firebase.initializeApp(config);
 var dokiDoki = firebase.database().ref('/User');
 var currentIndex = 0;
+var time = 0;
+var diffBPMAverage=[];
+
+// 標準偏差算出
+function sd(BPMList) {
+    // 平均値を求める
+    var ave = getCurrentBPMAverage(BPMList);
+    var varia = 0;
+    for (i = 0; i < BPMList.length; i++) {
+        varia = varia + Math.pow(BPMList[i] - ave, 2);
+    }
+    return Math.sqrt((varia / BPMList.length));
+}
+
+function sugestDokiDokiAction(){
+    fetch("http://192.168.11.90:8080/DokiDokiAction.json")
+    .then((res)=>res.json())
+    .then((res)=>{
+        console.log(res);
+        document.getElementById('recommend').classList.toggle("show");
+    });
+}
 
 function createBPMList(firebaseData){
     if(firebaseData.length === currentIndex) return null;
@@ -22,20 +44,42 @@ function createBPMList(firebaseData){
 function updateBPM(BPMList){
     if(!BPMList) return;
     if(currentIndex !== 0){
-        CJS.Ticker.setFPS(getCurrentBPMAverage(BPMList));
+        avgBPM=getCurrentBPMAverage(BPMList);
+        var stdv = sd(BPMList);
+        console.log(stdv);
+        time++;
+        if(time%3===0) console.log("今"+ Math.round(time/3) +"分");
+        if(stdv < 40 && time > 10){
+            sugestDokiDokiAction();
+            time = 0;
+        }
+        if(avgBPM===0) { avgBPM=1;alert("死亡した危険性があります")}
+        CJS.Ticker.setFPS(avgBPM);
+        if (document.getElementById("heart").style["animation-name"]==='anime1'){
+            document.getElementById("heart").style["animation-name"] = "";
+            document.getElementById("heart").style["animation-duration"] = 1.8 * 60 / getCurrentBPMAverage(BPMList) + "s";
+            document.getElementById("heart").style["animation-name"] = "anime0";
+        }else{
+            document.getElementById("heart").style["animation-name"] = "";
+            document.getElementById("heart").style["animation-duration"] = 1.8 * 60 / getCurrentBPMAverage(BPMList) + "s";
+            document.getElementById("heart").style["animation-name"] = "anime1";
+        }
         currentIndex++;
         return;
     }
     for(let BPM of BPMList){
-        console.log(BPM);
         currentIndex++;
     }
     avgBPM = getBPMAverage(BPMList);
     CJS.Ticker.setFPS(avgBPM);
+    document.getElementById("heart").style["animation-name"] = "";
+    document.getElementById("heart").style["animation-duration"] = 1.8 * 60 /getCurrentBPMAverage(BPMList) + "s";
+    document.getElementById("heart").style["animation-name"] = "anime1";
     console.log("AVG:" + avgBPM);
 }
 function getBPMAverage(BPMList){
     let sum = BPMList.reduce((prev,current)=>current+=prev);
+    console.log(BPMList)
     return sum/BPMList.length;
 }
 
@@ -51,6 +95,7 @@ function getCurrentBPMAverage(BPMList){
 // create Listener 
 dokiDoki.on('value', (snapshot) => {
     let BPMList = createBPMList(snapshot.val());
+    BPMList.slice(-10);
     updateBPM(BPMList);
 });
 

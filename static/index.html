@@ -5,9 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Doki-Doki-Lab</title>
+    <link rel="stylesheet" href="css/common.css">
 </head>
 <body>
-    <canvas width="400" height="300" id="demo"></canvas>
+    <div id="wrapper">
+        <div id="heart-box">
+            <i id="heart"></i>
+        </div>
+        <canvas width="400" height="300" id="demo"></canvas>
+        <div id="recommend">
+            <div id="message" onclick="document.getElementById('recommend').classList.toggle('show');">Nice DokiDoki!</div>
+            <button>坂を登りに行く</button>
+            <button>失言する</button>
+            <button>何かを賭けてジャンケンする</button>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
         crossorigin="anonymous"></script>
     <script src="https://code.createjs.com/createjs-2013.12.12.min.js"></script>
