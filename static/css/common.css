@@ -9,21 +9,21 @@ body{
 }
 .login-top {
     width:100%;
-    height:60vh;
+    height:90vh;
     display:flex;
     flex-direction:column;
     justify-content: center;
     align-items: center;
     background-image: url(../image/topbg.jpg);
     background-color: rgba(0,0,0,0.5);
-    background-size:100% 60vh;
+    background-size:100% 90vh;
     background-position:center;
     position: relative;
     z-index:1;
 }
 .login-top::after{
     content: "";
-    background-size:100% 60vh;
+    background-size:100% 90vh;
     display: block;
     position: absolute;
     top:0;
@@ -34,7 +34,7 @@ body{
     z-index:2;
 }
 
-.inner-txt h2{
+.login-inner-txt h2{
     position: relative;
     z-index:10;
     font-size: 70px;
@@ -44,7 +44,7 @@ body{
     font-family:Arial, Helvetica, sans-serif;
     text-align: center;
 }
-.inner-txt p{
+.login-inner-txt p{
     position: relative;
     z-index:10;
     font-size: 16px;
@@ -53,4 +53,23 @@ body{
     color:white;
     font-family:Arial,Helvetica,sans-serif;
     text-align: center;
+}
+.login-btn-container{
+    display:flex;
+    width:100%;
+    height:10vh;
+}
+.login-btn-container button{
+    background-color:#4285F4;
+    -webkit-appearance: none;
+    box-sizing:border-box;
+    width:100%;
+    box-shadow: none;
+    border:1px solid #3079ed;
+    outline:none;
+    padding: 0;
+    color:white;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow:5px 5px #3079ed inset;
 }
